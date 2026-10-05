@@ -1,0 +1,180 @@
+<!doctype html><html lang="en"><head>
+  <script type="module" src="/@vite/client"></script>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#0B120E"/><meta name="description" content="Decide in the fog — a synthetic degraded-information command training prototype."/><link rel="icon" href="/favicon.png"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><title>Decide in the fog · SIH26248</title><script>(function(){
+if(window.__cosmos_bridge)return;
+window.__cosmos_bridge=true;
+var P=window.parent;
+if(P===window)return;
+function s(t,d){try{P.postMessage(Object.assign({type:t,ts:Date.now()},d),'*')}catch(e){}}
+var _skip=/^\[vite\]|^\[HMR\]|^%c/;
+['log','warn','error','info','debug'].forEach(function(m){
+var o=console[m];
+console[m]=function(){o.apply(console,arguments);
+var a0=arguments[0];if(typeof a0==='string'&&_skip.test(a0))return;
+s('cosmos-console',{level:m,args:[].slice.call(arguments).map(function(x){
+try{return typeof x==='object'?JSON.stringify(x):String(x)}catch(e){return String(x)}
+})})};
+});
+window.addEventListener('error',function(e){
+s('cosmos-console',{level:'error',args:[e.message+' ('+e.filename+':'+e.lineno+':'+e.colno+')']});
+});
+window.addEventListener('unhandledrejection',function(e){
+s('cosmos-console',{level:'error',args:['Unhandled Promise: '+(e.reason&&e.reason.message||e.reason)]});
+});
+var _fetch=window.fetch;
+window.fetch=function(input,init){
+var method=(init&&init.method||'GET').toUpperCase();
+var url=typeof input==='string'?input:(input&&input.url||String(input));
+var t0=Date.now();
+return _fetch.apply(this,arguments).then(function(resp){
+s('cosmos-network',{method:method,url:url,status:resp.status,duration:Date.now()-t0});
+return resp;
+},function(err){
+s('cosmos-network',{method:method,url:url,status:0,duration:Date.now()-t0});
+throw err;
+});
+};
+var _open=XMLHttpRequest.prototype.open;
+var _send=XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.open=function(m,u){this._cm=m;this._cu=u;this._ct=Date.now();return _open.apply(this,arguments)};
+XMLHttpRequest.prototype.send=function(){var x=this;x.addEventListener('loadend',function(){
+s('cosmos-network',{method:(x._cm||'GET').toUpperCase(),url:x._cu||'',status:x.status,duration:Date.now()-(x._ct||Date.now())});
+});return _send.apply(this,arguments)};
+function hasContent(){
+var r=document.getElementById('root')||document.getElementById('app')||document.getElementById('__next');
+if(r&&r.children.length>0)return true;
+return document.body.children.length>1;
+}
+function check(){
+if(hasContent()){s('cosmos-loaded',{});return true}
+s('cosmos-empty',{});
+var ob=new MutationObserver(function(){if(hasContent()){ob.disconnect();s('cosmos-loaded',{})}});
+ob.observe(document.body,{childList:true,subtree:true});
+return false;
+}
+if(document.readyState==='complete'){check()}
+else{window.addEventListener('load',function(){check()})}
+window.addEventListener('message',function(e){
+if(e.data&&e.data.type==='cosmos-device-mode'){
+var on=e.data.enabled;
+var id='__cosmos_device_css';
+var ex=document.getElementById(id);
+if(on&&!ex){
+var st=document.createElement('style');st.id=id;
+st.textContent='html,body{scrollbar-width:none!important;-ms-overflow-style:none!important;user-select:none!important;-webkit-user-select:none!important;cursor:grab!important}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none!important}html.cosmos-dragging,html.cosmos-dragging body{cursor:grabbing!important}#__cosmos_thumb{position:fixed;right:2px;width:5px;border-radius:3px;background:rgba(0,0,0,.35);opacity:0;transition:opacity .3s;pointer-events:none;z-index:2147483647;min-height:30px}';
+document.head.appendChild(st);
+var thumb=document.createElement('div');thumb.id='__cosmos_thumb';document.body.appendChild(thumb);
+var hideTimer=0;
+function showThumb(){
+var dh=document.documentElement.scrollHeight,vh=window.innerHeight;
+if(dh<=vh){thumb.style.opacity='0';return}
+var ratio=vh/dh,h=Math.max(30,vh*ratio),top=(window.scrollY/(dh-vh))*(vh-h);
+thumb.style.height=h+'px';thumb.style.top=top+'px';thumb.style.opacity='1';
+clearTimeout(hideTimer);hideTimer=setTimeout(function(){thumb.style.opacity='0'},800);
+}
+window.addEventListener('scroll',showThumb,{passive:true});
+var dragging=false,startY=0,scrollStart=0;
+document.addEventListener('mousedown',function(ev){dragging=true;startY=ev.clientY;scrollStart=window.scrollY;document.documentElement.classList.add('cosmos-dragging')});
+document.addEventListener('mousemove',function(ev){if(!dragging)return;ev.preventDefault();window.scrollTo(0,scrollStart-(ev.clientY-startY))});
+document.addEventListener('mouseup',function(){dragging=false;document.documentElement.classList.remove('cosmos-dragging')});
+}else if(!on&&ex){ex.remove()}
+}
+if(e.data&&e.data.type==='cosmos-select-mode'){
+var on=e.data.enabled;
+if(on&&!window.__cosmos_select_off){
+var sid='__cosmos_select_css';
+var st=document.createElement('style');st.id=sid;
+st.textContent='html.cosmos-selecting,html.cosmos-selecting *{cursor:crosshair!important}[data-cosmos-hover]{outline:2px solid #4f9d69!important;outline-offset:1px!important;background:rgba(79,157,105,.08)!important}';
+document.head.appendChild(st);
+document.documentElement.classList.add('cosmos-selecting');
+var lastHover=null;
+function attrStr(el){
+var out='',i,a,v;
+for(i=0;i<el.attributes.length;i++){
+a=el.attributes[i];
+if(a.name==='data-cosmos-hover')continue;
+v=String(a.value||'');
+if(v.length>120)v=v.slice(0,120)+'…';
+out+=' '+a.name+(v?'="'+v+'"':'');
+}
+return out;
+}
+function openTag(el){return '<'+el.tagName.toLowerCase()+attrStr(el)+'>'}
+function segFor(el){
+var seg=el.tagName.toLowerCase();
+if(el.id){seg+='#'+el.id}
+else if(typeof el.className==='string'&&el.className.trim()){seg+='.'+el.className.trim().split(/\s+/).slice(0,2).join('.')}
+var parent=el.parentElement;
+if(parent){
+var sibs=[].filter.call(parent.children,function(c){return c.tagName===el.tagName});
+if(sibs.length>1){seg+=':nth-of-type('+(sibs.indexOf(el)+1)+')'}
+}
+return seg;
+}
+function buildPath(el){
+var parts=[],cur=el,depth=0;
+while(cur&&cur!==document.body&&depth<6){
+parts.unshift(segFor(cur));cur=cur.parentElement;depth++;
+}
+return parts.join(' > ');
+}
+function buildAncestors(el){
+var out=[],cur=el.parentElement,depth=0;
+while(cur&&cur!==document.documentElement&&depth<8){
+out.unshift(openTag(cur));cur=cur.parentElement;depth++;
+}
+return out;
+}
+function buildContext(el){
+var p=el.parentElement;
+if(!p)return '';
+var parts=[openTag(p)],i,c,tag;
+for(i=0;i<p.children.length;i++){
+c=p.children[i];tag=c.tagName.toLowerCase();
+if(c===el){parts.push(openTag(c)+'<!-- selected element -->…</'+tag+'>')}
+else{parts.push(openTag(c)+'…</'+tag+'>')}
+}
+parts.push('</'+p.tagName.toLowerCase()+'>');
+return parts.join('\n').slice(0,3000);
+}
+function onHover(ev){
+var t=ev.target;
+if(!t||t===document.documentElement||t===document.body)return;
+if(lastHover&&lastHover!==t)lastHover.removeAttribute('data-cosmos-hover');
+t.setAttribute('data-cosmos-hover','');lastHover=t;
+}
+function onUnhover(ev){
+if(lastHover===ev.target){lastHover.removeAttribute('data-cosmos-hover');lastHover=null}
+}
+function onClick(ev){
+var t=ev.target;if(!t)return;
+ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation();
+t.removeAttribute('data-cosmos-hover');if(lastHover===t)lastHover=null;
+var cls=(t.className&&typeof t.className==='string')?t.className:'';
+var text=(t.innerText||t.textContent||'').trim().replace(/\s+/g,' ').slice(0,500);
+var html=t.outerHTML?t.outerHTML.slice(0,8000):'';
+s('cosmos-element-selected',{tag:t.tagName.toLowerCase(),id:t.id||'',classes:cls,text:text,path:buildPath(t),outerHTML:html,ancestors:buildAncestors(t),contextHTML:buildContext(t)});
+window.__cosmos_select_off&&window.__cosmos_select_off();
+}
+function onKey(ev){if(ev.key==='Escape'){window.__cosmos_select_off&&window.__cosmos_select_off()}}
+window.__cosmos_select_off=function(){
+if(lastHover){lastHover.removeAttribute('data-cosmos-hover');lastHover=null}
+var s2=document.getElementById(sid);if(s2)s2.remove();
+document.documentElement.classList.remove('cosmos-selecting');
+document.removeEventListener('mouseover',onHover,true);
+document.removeEventListener('mouseout',onUnhover,true);
+document.removeEventListener('click',onClick,true);
+document.removeEventListener('keydown',onKey,true);
+window.__cosmos_select_off=null;
+s('cosmos-select-mode-off',{});
+};
+document.addEventListener('mouseover',onHover,true);
+document.addEventListener('mouseout',onUnhover,true);
+document.addEventListener('click',onClick,true);
+document.addEventListener('keydown',onKey,true);
+}else if(!on&&window.__cosmos_select_off){
+window.__cosmos_select_off();
+}
+}
+});
+})();</script></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
